@@ -19,6 +19,7 @@ public class MultiArenaPlayer : NetworkBehaviour
     public UsableItemSlot UsableSlot2;
     public UsableItemSlot UsableSlot3;
     public LockOnManager LockOnManager;
+    public ResourceDamage[] Damages;
 
     private ArenaInput _input;
 
@@ -114,5 +115,90 @@ public class MultiArenaPlayer : NetworkBehaviour
         {
             _input.Disable();
         }
+    }
+
+    public bool CheckReceiveDamage(DamageKind damageKind)
+    {
+        if (Array.IndexOf(Damages, damageKind) < 0)
+            return true;//non-networked damage kind > LOCAL
+
+        return IsOwner;
+    }
+
+    public bool CheckSendDamage(IDamageReceiver receiver, DamageKind damageKind)
+    {
+        if (receiver?.AssociatedCharacter?.GetComponent<NetworkObject>() == null)
+            return true;//receiver is not networked > LOCAL
+
+        if (Array.IndexOf(Damages, damageKind) < 0)
+            return true;//non-networked damage kind > LOCAL
+
+        return IsOwner;
+    }
+
+    public void ReceiveDamage(DamageEvent damageEvent)
+    {
+        var i = Array.IndexOf(Damages, damageEvent.Kind);
+        if (i < 0)
+            return;
+
+        receiveDamageRpc(i, damageEvent.Value, damageEvent.Vector);
+    }
+
+    public void SendDamage(DamageEvent damageEvent)
+    {
+        var i = Array.IndexOf(Damages, damageEvent.Kind);
+        if (i < 0)
+            return;
+
+        var receiver = damageEvent.Receiver.AssociatedCharacter.GetComponent<NetworkObject>();
+
+        sendDamageRpc(receiver, i, damageEvent.Value, damageEvent.Vector);
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void receiveDamageRpc(int damageIndex, float value, Vector3 vector)
+    {
+        var damage = Damages[damageIndex];
+        var e = new DamageEvent()
+        {
+            Kind = damage,
+            Value = value,
+            Vector = vector,
+            Receiver = Character,
+        };
+
+        ResourceBarManager.Instance?.Damage(e.Receiver.AssociatedCharacter.ResourcePool, damage.ResourceType, e, damage.ShowBar);
+
+        if (damage.Add)
+            Character.ResourcePool.AddResource(new ResourceQuantity(damage.ResourceType, value), this);
+        else
+            Character.ResourcePool.RemoveResource(new ResourceQuantity(damage.ResourceType, value), this);
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void sendDamageRpc(NetworkObjectReference receiverReference, int damageIndex, float value, Vector3 vector)
+    {
+        if (!receiverReference.TryGet(out var receiver))
+            return;
+
+
+        var character = receiver.GetComponent<CharacterBase>();
+
+        var damage = Damages[damageIndex];
+        var e = new DamageEvent()
+        {
+            Kind = damage,
+            Value = value,
+            Vector = vector,
+            Receiver = character,
+        };
+
+        ResourceBarManager.Instance?.Damage(e.Receiver.AssociatedCharacter.ResourcePool, damage.ResourceType, e, damage.ShowBar);
+
+        if (damage.Add)
+            character.ResourcePool.AddResource(new ResourceQuantity(damage.ResourceType, value), this);
+        else
+            character.ResourcePool.RemoveResource(new ResourceQuantity(damage.ResourceType, value), this);
     }
 }

@@ -1716,7 +1716,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5246425971570952147}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02f27d7a332f0404aba9d148e9b6e039, type: 3}
+  m_Script: {fileID: 11500000, guid: 141fc951c229199438f45209b9c46bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 
@@ -1817,6 +1817,7 @@ MonoBehaviour:
   Dying:
     m_PersistentCalls:
       m_Calls: []
+  Networker: {fileID: 211845273507052807}
   references:
     version: 2
     RefIds: []
@@ -2014,6 +2015,8 @@ MonoBehaviour:
   UsableSlot2: {fileID: 2973792195897205732}
   UsableSlot3: {fileID: 1634012860269761895}
   LockOnManager: {fileID: 1258231451277216868}
+  Damages:
+  - {fileID: 11400000, guid: 1ae3d3e7f05a2274e856385f15194a00, type: 2}
 --- !u!1 &5671691308340043324
 GameObject:
   m_ObjectHideFlags: 0
