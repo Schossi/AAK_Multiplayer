@@ -23,6 +23,9 @@ public class ActorNetworker : NetworkBehaviour
         if (!IsOwner)
             return;
 
+        if (Actor.Character.InventoryBase.Slots.OfType<UsableItemSlot>().Any(s => s.CurrentAction == action))
+            return;//dont restart actions start by using item
+
         if (Actor.ChildActions.Values.Contains(action))
             startActorChildRpc(action.name);
         else if (action.transform.IsChildOf(Actor.Character.transform))
