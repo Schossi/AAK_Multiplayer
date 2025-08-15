@@ -1,5 +1,4 @@
 using AdventureCore;
-using AdventureCore.Assets.SoftLeitner.AdventureCore.Item.Slots;
 using AdventureExtras;
 using System;
 using System.Collections.Generic;
