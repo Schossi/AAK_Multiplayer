@@ -7,8 +7,8 @@ TODO
 ## Setup
 
 The is not included in this repository and has to be downloaded separately. After cloning the project will be missing SoftLeitner folder.  
-![project structure](https://github.com/Schossi/AAK_KinematicCharacterController/blob/main/Project.png)  
-Start by downloading them from the asset store or copy them from another project before opening this one to avoid all the errors from missing dependencies.
+![project structure](https://github.com/Schossi/AAK_Multiplayer/blob/main/Project.png)  
+Start by downloading it from the asset store or copy it from another project before opening this one to avoid all the errors from missing dependencies.
 
 ## Scenes
 
