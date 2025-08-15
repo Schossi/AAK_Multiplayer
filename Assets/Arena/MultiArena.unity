@@ -1306,7 +1306,7 @@ MonoBehaviour:
   Damages:
   - Kind: {fileID: 11400000, guid: 1ae3d3e7f05a2274e856385f15194a00, type: 2}
     Tag: {fileID: 0}
-    Value: 10
+    Value: 20
   Modifiers: []
   Messages: []
   Direction: 0

@@ -1,6 +1,7 @@
 ﻿using AdventureCore;
 using AdventureExtras;
 using System.Linq;
+using UnityEngine;
 
 public class MultiArenaPlayerCharacter : ArenaPlayer
 {
@@ -13,7 +14,6 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
         else
             return false;
     }
-
     public override bool PreDamageSend(IDamageSender sender, IDamageReceiver receiver)
     {
         if (Networker.CheckSendDamage(receiver, sender.Damages.FirstOrDefault()?.Kind))
@@ -28,11 +28,25 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
 
         Networker.ReceiveDamage(e);
     }
-
     public override void OnDamageSend(DamageEvent e)
     {
         base.OnDamageSend(e);
 
         Networker.SendDamage(e);
+    }
+
+    public override void Die(Vector3 force)
+    {
+        if (Networker.IsOwner)
+            Networker.SendDeath(force);
+    }
+
+    public void DieLocal(Vector3 force)
+    {
+        createRagdoll(force);
+
+        Movement.TeleportCharacter(Vector3.zero, Quaternion.identity);
+        ResourcePool.ResetResources();
+        EffectPool.ClearEffects();
     }
 }

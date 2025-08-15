@@ -2,6 +2,7 @@ using AdventureCore;
 using AdventureCore.Assets.SoftLeitner.AdventureCore.Item.Slots;
 using AdventureExtras;
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,7 +10,7 @@ using UnityEngine.InputSystem;
 
 public class MultiArenaPlayer : NetworkBehaviour
 {
-    public CharacterBase Character;
+    public MultiArenaPlayerCharacter Character;
     public NetworkCharacterControllerMovement Movement;
     public CharacterActionArea ActionArea;
     public ActionItemSlot WeaponSlot;
@@ -124,7 +125,6 @@ public class MultiArenaPlayer : NetworkBehaviour
 
         return IsOwner;
     }
-
     public bool CheckSendDamage(IDamageReceiver receiver, DamageKind damageKind)
     {
         if (receiver?.AssociatedCharacter?.GetComponent<NetworkObject>() == null)
@@ -144,7 +144,6 @@ public class MultiArenaPlayer : NetworkBehaviour
 
         receiveDamageRpc(i, damageEvent.Value, damageEvent.Vector);
     }
-
     public void SendDamage(DamageEvent damageEvent)
     {
         var i = Array.IndexOf(Damages, damageEvent.Kind);
@@ -154,6 +153,11 @@ public class MultiArenaPlayer : NetworkBehaviour
         var receiver = damageEvent.Receiver.AssociatedCharacter.GetComponent<NetworkObject>();
 
         sendDamageRpc(receiver, i, damageEvent.Value, damageEvent.Vector);
+    }
+
+    public void SendDeath(Vector3 force)
+    {
+        sendDeathRpc(force);
     }
 
     [Rpc(SendTo.NotMe)]
@@ -174,6 +178,8 @@ public class MultiArenaPlayer : NetworkBehaviour
             Character.ResourcePool.AddResource(new ResourceQuantity(damage.ResourceType, value), this);
         else
             Character.ResourcePool.RemoveResource(new ResourceQuantity(damage.ResourceType, value), this);
+
+        Character.PostDamageReceive(null, Character, new List<DamageEvent> { e });
     }
 
     [Rpc(SendTo.NotMe)]
@@ -200,5 +206,13 @@ public class MultiArenaPlayer : NetworkBehaviour
             character.ResourcePool.AddResource(new ResourceQuantity(damage.ResourceType, value), this);
         else
             character.ResourcePool.RemoveResource(new ResourceQuantity(damage.ResourceType, value), this);
+
+        character.PostDamageReceive(null, character, new List<DamageEvent> { e });
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void sendDeathRpc(Vector3 force)
+    {
+        Character.DieLocal(force);
     }
 }

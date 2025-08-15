@@ -1219,7 +1219,7 @@ Transform:
   m_GameObject: {fileID: 4081325484913990176}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1241,7 +1241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Persister: {fileID: 925643892048355723}
   PersistenceInterval: 1
-  BarTarget: {fileID: 0}
+  BarTarget: {fileID: 7110817598955283569}
   Values:
   - {fileID: 8887115899221661376}
   - {fileID: 8403202492082950819}
