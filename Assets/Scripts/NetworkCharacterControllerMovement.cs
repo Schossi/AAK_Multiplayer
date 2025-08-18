@@ -12,7 +12,6 @@ public class NetworkCharacterControllerMovement : CharacterControllerMovement
         Networker.SpeedFactorSideways.OnValueChanged += speedFactorSidewaysChanged;
     }
 
-
     private void OnDisable()
     {
         Networker.SpeedFactorForward.OnValueChanged -= speedFactorForwardChanged;

@@ -23,7 +23,7 @@ public class ActorNetworker : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        if (Actor.Character.InventoryBase.Slots.OfType<UsableItemSlot>().Any(s => s.CurrentAction == action))
+        if (Actor.Character?.InventoryBase?.Slots?.OfType<UsableItemSlot>().Any(s => s.CurrentAction == action) ?? false)
             return;//dont restart actions start by using item
 
         if (Actor.ChildActions.Values.Contains(action))
@@ -37,6 +37,8 @@ public class ActorNetworker : NetworkBehaviour
     [Rpc(SendTo.NotOwner)]
     private void startActorChildRpc(string name)
     {
+        Debug.Log("Networked Child Action: " + name);
+
         if (Actor.ChildActions.TryGetValue(name, out var action))
             Actor.StartAction(action, force: true);
     }
@@ -44,6 +46,8 @@ public class ActorNetworker : NetworkBehaviour
     [Rpc(SendTo.NotOwner)]
     private void startCharacterChildRpc(string path)
     {
+        Debug.Log("Networked Char Child Action: " + name);
+
         var transform = Actor.Character.transform.Find(path);
         var action = transform?.GetComponent<CharacterActionBase>();
         if (action)
@@ -53,6 +57,8 @@ public class ActorNetworker : NetworkBehaviour
     [Rpc(SendTo.NotOwner)]
     private void startGlobalRpc(string path)
     {
+        Debug.Log("Networked Global Action: " + name);
+
         var transform = GameObject.Find(path);
         var action = transform?.GetComponent<CharacterActionBase>();
         if (action)
