@@ -58,6 +58,8 @@ public class MultiArenaPlayer : NetworkBehaviour
         }
 
         CharacterBase.RegisterCharacter(Character, "P" + OwnerClientId);
+
+        Character.OnSpawn();
     }
     public override void OnNetworkDespawn()
     {

@@ -1818,6 +1818,16 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Networker: {fileID: 211845273507052807}
+  MaterialsDefault:
+  - {fileID: 2100000, guid: 52d8e411479b24d4487c26b09aaeb8ea, type: 2}
+  - {fileID: 2100000, guid: cfbd356b137405743b08699f7e47ab11, type: 2}
+  - {fileID: 2100000, guid: 73c3d7daad5f53745bf7cfc15d339517, type: 2}
+  - {fileID: 2100000, guid: d6310ece3be8ad0499d16bcfd2a7b139, type: 2}
+  MaterialsFade:
+  - {fileID: 2100000, guid: 248757c247820cc4cbe55ebcb9855f60, type: 2}
+  - {fileID: 2100000, guid: 286c93388e67d634aba0e8e4960d56dd, type: 2}
+  - {fileID: 2100000, guid: 59752a3aed991954691b0e1666442c86, type: 2}
+  - {fileID: 2100000, guid: 6b64a24fba202c441adb3b4c44040cb2, type: 2}
   references:
     version: 2
     RefIds: []
