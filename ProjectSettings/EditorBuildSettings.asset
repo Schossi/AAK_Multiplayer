@@ -6,6 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Arena/Scenes/MultiArenaTitle.unity
+    guid: 8c05ba502ff784b4ab39c1c05c4f0919
+  - enabled: 1
+    path: Assets/Arena/Scenes/MultiArenaShop.unity
+    guid: 6771e22d175efe94a97ea3b703803b33
+  - enabled: 1
+    path: Assets/Arena/Scenes/Stages/MultiArenaStage1.unity
+    guid: 8520fface4e70944c86ca157cae7166f
+  - enabled: 1
+    path: Assets/Arena/Scenes/Stages/MultiArenaStage2.unity
+    guid: fa93bf1d1a846e1488732371ef13eda4
+  - enabled: 1
+    path: Assets/Arena/Scenes/Stages/MultiArenaStage3.unity
+    guid: 48365efff8de73b49bebf08e9011847b
+  - enabled: 1
+    path: Assets/Arena/Scenes/Stages/MultiArenaStage4.unity
+    guid: 476cd5fab4743c540aed1815a2ee5cca
+  - enabled: 1
+    path: Assets/Arena/Scenes/Debugging/MultiArenaDebuggingStage.unity
+    guid: d77f6091a3b133346af0f2faf2c354fe
+  - enabled: 1
     path: Assets/Arena/Scenes/Debugging/MultiArenaDebuggingGeneral.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1

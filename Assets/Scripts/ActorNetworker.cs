@@ -46,7 +46,7 @@ public class ActorNetworker : NetworkBehaviour
     [Rpc(SendTo.NotOwner)]
     private void startCharacterChildRpc(string path)
     {
-        Debug.Log("Networked Char Child Action: " + name);
+        Debug.Log("Networked Char Child Action: " + path);
 
         var transform = Actor.Character.transform.Find(path);
         var action = transform?.GetComponent<CharacterActionBase>();
@@ -57,7 +57,7 @@ public class ActorNetworker : NetworkBehaviour
     [Rpc(SendTo.NotOwner)]
     private void startGlobalRpc(string path)
     {
-        Debug.Log("Networked Global Action: " + name);
+        Debug.Log("Networked Global Action: " + path);
 
         var transform = GameObject.Find(path);
         var action = transform?.GetComponent<CharacterActionBase>();

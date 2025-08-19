@@ -5982,7 +5982,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8701606895007493629}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be154cb6cf849b34d809d5d28194171c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0700e50fb68ed494cadb573b5f98fb28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 
@@ -6036,6 +6036,7 @@ MonoBehaviour:
   Dying:
     m_PersistentCalls:
       m_Calls: []
+  Networker: {fileID: 2618207582785383571}
   references:
     version: 2
     RefIds: []
@@ -6254,7 +6255,7 @@ MonoBehaviour:
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
+  DontDestroyWithOwner: 1
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
@@ -6271,9 +6272,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  PrefabIndex: 1
+  PrefabIndex: 6
   ScriptMachine: {fileID: 8701606895007493607}
   Collider: {fileID: 8701606895007493610}
+  Character: {fileID: 8701606895007493601}
 --- !u!114 &3343318132865340358
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MultiArenaEnemy : NetworkBehaviour
 {
     public int PrefabIndex;
-    public ScriptMachine ScriptMachine;
+    public Behaviour ScriptMachine;
+
     public CapsuleCollider Collider;
+    public MultiArenaEnemyCharacter Character;
 
     private void Awake()
     {
@@ -22,6 +23,8 @@ public class MultiArenaEnemy : NetworkBehaviour
         base.OnNetworkSpawn();
 
         ScriptMachine.enabled = IsOwner;
+
+        NetworkObject.DestroyWithScene = true;
     }
 
     public override void OnNetworkDespawn()
@@ -29,6 +32,17 @@ public class MultiArenaEnemy : NetworkBehaviour
         base.OnNetworkDespawn();
 
         ScriptMachine.enabled = false;
+    }
+
+    public void SendDeath(Vector3 force)
+    {
+        sendDeathRpc(force);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void sendDeathRpc(Vector3 force)
+    {
+        Character.DieLocal(force);
     }
 
     /// <summary>

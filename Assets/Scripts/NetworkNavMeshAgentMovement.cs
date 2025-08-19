@@ -75,4 +75,12 @@ public class NetworkNavMeshAgentMovement : NavMeshAgentMovement
 
         base.StopApproach();
     }
+
+    public override void PropelCharacter(Vector3 value)
+    {
+        if (!Networker.IsOwner)
+            return;
+
+        base.PropelCharacter(value);
+    }
 }

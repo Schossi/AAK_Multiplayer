@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class MultiArenaPlayer : NetworkBehaviour
@@ -23,9 +22,8 @@ public class MultiArenaPlayer : NetworkBehaviour
 
     private ArenaInput _input;
 
-    private UnityAction<string> _gameStateChanged;
     private bool _isInGame;
-
+    
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -50,8 +48,7 @@ public class MultiArenaPlayer : NetworkBehaviour
             subscribe(_input.Default.LockRight, LockOnManager.OnRight);
             subscribe(_input.Default.LockLeft, LockOnManager.OnLeft);
 
-            _gameStateChanged = new UnityAction<string>(gameStateChanged);
-            StateManager.Main.StateChanged.AddListener(_gameStateChanged);
+            StateManager.MainStateChanged += gameStateChanged;
             gameStateChanged(StateManager.Main.State);
 
             CharacterBase.RegisterCharacter(Character, "PL");
@@ -68,7 +65,7 @@ public class MultiArenaPlayer : NetworkBehaviour
         if (IsOwner)
         {
             gameStateChanged("-");
-            StateManager.Main.StateChanged.RemoveListener(_gameStateChanged);
+            StateManager.MainStateChanged -= gameStateChanged;
 
             unsubscribe(_input.Default.Move, Movement.OnMove);
 
@@ -161,6 +158,11 @@ public class MultiArenaPlayer : NetworkBehaviour
         sendDeathRpc(force);
     }
 
+    public void SendRevive()
+    {
+        sendReviveRpc();
+    }
+
     [Rpc(SendTo.NotMe)]
     private void receiveDamageRpc(int damageIndex, float value, Vector3 vector)
     {
@@ -215,5 +217,11 @@ public class MultiArenaPlayer : NetworkBehaviour
     private void sendDeathRpc(Vector3 force)
     {
         Character.DieLocal(force);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void sendReviveRpc()
+    {
+        Character.ReviveLocal();
     }
 }

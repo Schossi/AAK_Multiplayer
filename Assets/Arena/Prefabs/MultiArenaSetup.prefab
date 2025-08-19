@@ -1779,7 +1779,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8317927910376478761
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3291,7 +3291,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1871673863902582379
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3489,7 +3489,6 @@ GameObject:
   - component: {fileID: 1372397263415495957}
   - component: {fileID: 2699730909906673579}
   - component: {fileID: 4360634570443261289}
-  - component: {fileID: 6336276637536139238}
   m_Layer: 0
   m_Name: MultiArenaSetup
   m_TagString: Untagged
@@ -3740,13 +3739,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5943801928155482063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 209eb6ca7c1b0764ea98b9af3a8942db, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e6bb425e2f249546b5d54afe432b32c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Fader: {fileID: 1315651068707926389}
-  Persister: {fileID: 1372397263415495957}
-  Player: {fileID: 0}
   Essence: {fileID: 11400000, guid: 200af2940c234ef45946ac68fab405b3, type: 2}
+  LockOn: {fileID: 8339078245411113145}
 --- !u!114 &1372397263415495957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3967,18 +3964,6 @@ MonoBehaviour:
   m_DefaultActionMap: Default
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &6336276637536139238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5943801928155482063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0fef3a005e1a77419d9da26127c6744, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5974965237707633772
 GameObject:
   m_ObjectHideFlags: 0

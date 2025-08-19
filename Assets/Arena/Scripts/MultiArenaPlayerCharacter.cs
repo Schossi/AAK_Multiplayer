@@ -7,10 +7,16 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
 {
     public MultiArenaPlayer Networker;
     public Material[] MaterialsDefault;
+    public Material[] MaterialsGhost;
     public Material[] MaterialsFade;
+
+    private MultiArenaGhostInstruction _ghostInstruction = new MultiArenaGhostInstruction();
 
     public override bool PreDamageReceive(IDamageSender sender, IDamageReceiver receiver)
     {
+        if (IsReceiveDamageSuspended)
+            return false;
+
         if (Networker.CheckReceiveDamage(sender.Damages.FirstOrDefault()?.Kind))
             return base.PreDamageReceive(sender, receiver);
         else
@@ -18,6 +24,9 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
     }
     public override bool PreDamageSend(IDamageSender sender, IDamageReceiver receiver)
     {
+        if (IsSendDamageSuspended)
+            return false;
+
         if (Networker.CheckSendDamage(receiver, sender.Damages.FirstOrDefault()?.Kind))
             return base.PreDamageSend(sender, receiver);
         else
@@ -45,26 +54,43 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
 
     public void OnSpawn()
     {
-        Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getPlayerMaterial((int)Networker.OwnerClientId);
+        Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getDefaultMaterial();
     }
 
     public void DieLocal(Vector3 force)
     {
         var ragdoll = createRagdoll(force);
 
-        ragdoll.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getPlayerMaterial((int)Networker.OwnerClientId);
-        ragdoll.GetComponent<FadeAndDestroy>().FadeMaterial = getPlayerMaterial((int)Networker.OwnerClientId, true);
+        ragdoll.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getDefaultMaterial();
+        ragdoll.GetComponent<FadeAndDestroy>().FadeMaterial = getFadeMaterial();
 
-        Movement.TeleportCharacter(Vector3.zero, Quaternion.identity);
-        ResourcePool.ResetResources();
-        EffectPool.ClearEffects();
+        Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getGhostMaterial();
+
+        OnMessage("DEATH");
+
+        AddInstruction(_ghostInstruction);
+
+        MultiArenaStage.CurrentStage?.CheckGameOver();
     }
 
-    private Material getPlayerMaterial(int playerIndex, bool fade = false)
+    public void ReviveLocal()
     {
-        if (fade)
-            return MaterialsFade[playerIndex % MaterialsFade.Length];
-        else
-            return MaterialsDefault[playerIndex % MaterialsDefault.Length];
+        ResourcePool.ResetResources();
+
+        Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getDefaultMaterial();
+
+        OnMessage("REVIVE");
+
+        RemoveInstruction(_ghostInstruction);
     }
+
+    public void OnTargetChanged(LockOnPoint point)
+    {
+        if (MultiArenaCommon.Instance.LockOn)
+            MultiArenaCommon.Instance.LockOn.SetTarget(point);
+    }
+
+    private Material getDefaultMaterial() => MaterialsDefault[(int)Networker.OwnerClientId % MaterialsDefault.Length];
+    private Material getGhostMaterial() => MaterialsGhost[(int)Networker.OwnerClientId % MaterialsGhost.Length];
+    private Material getFadeMaterial() => MaterialsFade[(int)Networker.OwnerClientId % MaterialsFade.Length];
 }
