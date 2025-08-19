@@ -59,6 +59,8 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
 
     public void DieLocal(Vector3 force)
     {
+        Dead = true;
+
         var ragdoll = createRagdoll(force);
 
         ragdoll.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getDefaultMaterial();
@@ -75,6 +77,8 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
 
     public void ReviveLocal()
     {
+        Dead = false;
+
         ResourcePool.ResetResources();
 
         Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getDefaultMaterial();

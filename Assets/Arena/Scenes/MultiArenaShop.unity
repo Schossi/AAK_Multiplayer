@@ -15115,6 +15115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2086870396}
+  - component: {fileID: 2086870398}
   - component: {fileID: 2086870397}
   m_Layer: 0
   m_Name: ArenaShop
@@ -15153,6 +15154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46368a03bd1e5f4e8536938953e2c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   ExitAction: {fileID: 1654395300}
   Slots:
   - {fileID: 2871589813441045442}
@@ -15186,6 +15188,31 @@ MonoBehaviour:
   - {fileID: 2018420188362984556, guid: 9bfd42770eaad3445bfc2d768734a788, type: 3}
   - {fileID: 2018420188362984556, guid: 9bfd42770eaad3445bfc2d768734a788, type: 3}
   StageText: {fileID: 1326706491}
+--- !u!114 &2086870398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086870395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1427139630
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 8
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &2088629052
 GameObject:
   m_ObjectHideFlags: 0

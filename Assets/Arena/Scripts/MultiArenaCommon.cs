@@ -36,6 +36,13 @@ public class MultiArenaCommon : MonoBehaviour
     }
 
     public IEnumerable<MultiArenaPlayerCharacter> GetPlayers() => CharacterBase.Characters.OfType<MultiArenaPlayerCharacter>();
+    public void ReviveAll()
+    {
+        foreach (var player in FindObjectsByType<MultiArenaPlayer>(FindObjectsSortMode.None))
+        {
+            player.SendRevive();
+        }
+    }
 
     public int GetStage() => _stage;
     public string GetStageName()

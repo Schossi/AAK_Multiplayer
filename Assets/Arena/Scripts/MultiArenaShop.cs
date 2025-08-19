@@ -13,7 +13,7 @@ namespace AdventureExtras
     /// </summary>
     /// <remarks><see href="https://adventure.softleitner.com/manual">https://adventure.softleitner.com/manual</see></remarks>
     [HelpURL("https://adventureapi.softleitner.com/class_adventure_extras_1_1_arena_shop.html")]
-    public class MultiArenaShop : MonoBehaviour
+    public class MultiArenaShop : NetworkBehaviour
     {
         [Tooltip("when this action is started the script displays a dialog for entering the next stage")]
         public CharacterActionBase ExitAction;
@@ -23,6 +23,8 @@ namespace AdventureExtras
         public Transform[] Prefabs;
         [Tooltip("displays Next Up: {NextStageName}")]
         public TMP_Text StageText;
+
+        public NetworkVariable<int> Seed { get; } = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Owner);
 
         private void Start()
         {
@@ -34,9 +36,42 @@ namespace AdventureExtras
                 else
                     NetworkManager.Singleton.StartClient();
             }
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
 
             StageText.text = "Next Up: " + MultiArenaCommon.Instance.GetStageName();
 
+            if (NetworkManager.Singleton.IsHost)
+            {
+                ExitAction.Starting.AddListener(onExit);
+
+                var seed = Random.seed;
+                Seed.Value = seed;
+                Debug.Log("SET" + seed);
+                createShops(seed);
+            }
+            else
+            {
+                ExitAction.IsAvailable = false;
+                ExitAction.name = "Waiting for Host...";
+                Debug.Log("GET" + Seed.Value);
+                if (Seed.Value != 0)
+                    createShops(Seed.Value);
+                else
+                    Seed.OnValueChanged += seedChanged;
+            }
+        }
+
+        private void seedChanged(int oldValue,int newValue)
+        {
+            Seed.OnValueChanged -= seedChanged;
+            createShops(newValue);
+        }
+        private void createShops(int seed)
+        {
             var options = new List<Transform>();
             foreach (var prefab in Prefabs)
             {
@@ -48,6 +83,8 @@ namespace AdventureExtras
                 options.Add(prefab);
             }
 
+            Random.seed = seed;
+
             foreach (var slot in Slots)
             {
                 if (options.Count == 0)
@@ -57,16 +94,6 @@ namespace AdventureExtras
                 var prefab = options[index];
                 options.RemoveAt(index);
                 Instantiate(prefab, slot);
-            }
-
-            if (NetworkManager.Singleton.IsHost)
-            {
-                ExitAction.Starting.AddListener(onExit);
-            }
-            else
-            {
-                ExitAction.IsAvailable = false;
-                ExitAction.name = "Waiting for Host...";
             }
         }
 

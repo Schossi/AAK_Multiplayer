@@ -23,7 +23,7 @@ public class MultiArenaPlayer : NetworkBehaviour
     private ArenaInput _input;
 
     private bool _isInGame;
-    
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -155,12 +155,29 @@ public class MultiArenaPlayer : NetworkBehaviour
 
     public void SendDeath(Vector3 force)
     {
+        if (Character.Dead)
+            return;
+
         sendDeathRpc(force);
     }
 
     public void SendRevive()
     {
+        if (!Character.Dead)
+            return;
+
         sendReviveRpc();
+    }
+
+    public void SendEssence(int quantity)
+    {
+        sendEssenceRpc(quantity);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void sendEssenceRpc(int quantity)
+    {
+        Character.Inventory.AddItems(new ItemQuantity(MultiArenaCommon.Instance.Essence, quantity));
     }
 
     [Rpc(SendTo.NotMe)]
@@ -175,7 +192,8 @@ public class MultiArenaPlayer : NetworkBehaviour
             Receiver = Character,
         };
 
-        ResourceBarManager.Instance?.Damage(e.Receiver.AssociatedCharacter.ResourcePool, damage.ResourceType, e, damage.ShowBar);
+        if (ResourceBarManager.Instance)
+            ResourceBarManager.Instance.Damage(e.Receiver.AssociatedCharacter.ResourcePool, damage.ResourceType, e, damage.ShowBar);
 
         if (damage.Add)
             Character.ResourcePool.AddResource(new ResourceQuantity(damage.ResourceType, value), this);
@@ -203,7 +221,8 @@ public class MultiArenaPlayer : NetworkBehaviour
             Receiver = character,
         };
 
-        ResourceBarManager.Instance?.Damage(e.Receiver.AssociatedCharacter.ResourcePool, damage.ResourceType, e, damage.ShowBar);
+        if (ResourceBarManager.Instance)
+            ResourceBarManager.Instance.Damage(e.Receiver.AssociatedCharacter.ResourcePool, damage.ResourceType, e, damage.ShowBar);
 
         if (damage.Add)
             character.ResourcePool.AddResource(new ResourceQuantity(damage.ResourceType, value), this);

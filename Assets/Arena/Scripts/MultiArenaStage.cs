@@ -94,18 +94,17 @@ public class MultiArenaStage : MonoBehaviour
 
     public void CheckGameOver()
     {
-        if (CharacterBase.Characters.Any(c => c.tag == "Player"))
+        if (!NetworkManager.Singleton.IsHost)
+            return;
+
+        if (CharacterBase.Characters.OfType<MultiArenaPlayerCharacter>().Any(c => !c.Dead))
             return;
 
         _isPlaying = false;
 
         this.Delay(() => DialogBase.Main.Show("STAGE " + MultiArenaCommon.Instance.GetStage().ToString(), "GAME OVER!", _ =>
         {
-            foreach (var player in FindObjectsByType<MultiArenaPlayer>(FindObjectsSortMode.None))
-            {
-                player.SendRevive();
-            }
-
+            MultiArenaCommon.Instance.ReviveAll();
             MultiArenaCommon.Instance.LoadTitle();
         }, new string[] { "Title Screen" }, selection: DialogResult.Option1), 2f);
     }
@@ -117,14 +116,15 @@ public class MultiArenaStage : MonoBehaviour
         var bonus = Math.Max(0, ParTime - Mathf.RoundToInt(_playTime));
         if (bonus > 0)
         {
-            foreach (var player in CharacterBase.Characters.Where(c => c.tag == "Player"))
+            foreach (var player in CharacterBase.Characters.OfType<MultiArenaPlayerCharacter>().Where(c => !c.Dead))
             {
-                player.InventoryBase.AddItems(new ItemQuantity(MultiArenaCommon.Instance.Essence, bonus));
+                player.Networker.SendEssence(bonus);
             }
         }
 
         this.Delay(() => DialogBase.Main.Show("STAGE " + MultiArenaCommon.Instance.GetStage().ToString(), @$"WELL DONE!{Environment.NewLine}TIME BONUS: {bonus}", _ =>
         {
+            MultiArenaCommon.Instance.ReviveAll();
             MultiArenaCommon.Instance.AdvanceStage();
             MultiArenaCommon.Instance.LoadShop();
         }, new string[] { "Enter Shop" }, selection: DialogResult.Option1), 3f);
