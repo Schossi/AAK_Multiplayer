@@ -3436,6 +3436,7 @@ GameObject:
   - component: {fileID: 846681151}
   - component: {fileID: 846681150}
   - component: {fileID: 846681152}
+  - component: {fileID: 846681154}
   m_Layer: 0
   m_Name: Logic
   m_TagString: Untagged
@@ -3505,7 +3506,7 @@ MonoBehaviour:
   Areas:
   - {fileID: 11400000, guid: a37a9f6280245524ba9a89a464a9efaa, type: 2}
   - {fileID: 11400000, guid: ca206cbf91c423145a11ee4c9996c8ab, type: 2}
-  AutoLoad: 0
+  AutoLoad: 1
   AutoSave: 0
   Buffer: 1
   Saving:
@@ -3560,9 +3561,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Fader: {fileID: 1262882772}
+  Persister: {fileID: 846681154}
   Essence: {fileID: 11400000, guid: 200af2940c234ef45946ac68fab405b3, type: 2}
   Health: {fileID: 11400000, guid: e93b57931e2dc13408092ee62a857e32, type: 2}
   LockOn: {fileID: 0}
+--- !u!114 &846681154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846681147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0ab267c524e634ebbd6bc822b9edd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Area: {fileID: 11400000, guid: a37a9f6280245524ba9a89a464a9efaa, type: 2}
+  Key: GAME
+  CustomContainer: {fileID: 846681151}
 --- !u!1 &861928081
 GameObject:
   m_ObjectHideFlags: 0

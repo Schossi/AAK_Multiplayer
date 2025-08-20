@@ -12,13 +12,13 @@ public class MultiArenaCommon : MonoBehaviour
 
     [Tooltip("used to fade camera to and from black and fade in sound when a scene starts or ends")]
     public Fader Fader;
+    [Tooltip("persister used to save stage number and prestige level")]
+    public PersisterBase Persister;
     [Tooltip("currency(awarded for finishing a stage under par time)")]
     public ItemBase Essence;
+    public ItemBase StartingWeapon;
     public ResourceType Health;
     public Follower LockOn;
-
-    private static int _stage = 1;
-    private static int _prestige = 0;
 
     private void Awake()
     {
@@ -52,7 +52,8 @@ public class MultiArenaCommon : MonoBehaviour
         }
     }
 
-    public int GetStage() => _stage;
+    public bool Check() => Persister.Check("STAGE");
+    public int GetStage() => Persister.Get("STAGE", 1);
     public string GetStageName()
     {
         var name = "STAGE " + GetStage();
@@ -61,9 +62,9 @@ public class MultiArenaCommon : MonoBehaviour
             name += $"(P{prestige})";
         return name;
     }
-    public int GetPrestige() => _prestige;
-    public void SetStage(int value) => _stage = value;
-    public void SetPrestige(int value) => _prestige = value;
+    public int GetPrestige() => Persister.Get("PRESTIGE", 0);
+    public void SetStage(int value) => Persister.Set(value, "STAGE");
+    public void SetPrestige(int value) => Persister.Set(value, "PRESTIGE");
     public void AdvanceStage()
     {
         var nextStage = GetStage() + 1;
@@ -75,10 +76,30 @@ public class MultiArenaCommon : MonoBehaviour
 
         SetStage(nextStage);
     }
+    public void SaveGame()
+    {
+        PersistenceContainer.Instance.Save(Persister.PersistenceArea);
+    }
     public void ClearGame()
     {
-        _stage = 1;
-        _prestige = 0;
+        PersistenceContainer.Instance.Clear(Persister.PersistenceArea);
+    }
+
+    public void LoadPlayers()
+    {
+        PersistenceContainer.Instance.Load();
+
+        foreach (var player in GetPlayers())
+        {
+            player.Networker.LoadPlayer();
+        }
+    }
+    public void ResetPlayers()
+    {
+        foreach (var player in GetPlayers())
+        {
+            player.Networker.ResetPlayer();
+        }
     }
 
     public void LoadTitle()

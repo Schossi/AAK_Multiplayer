@@ -80,6 +80,7 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
         Dead = false;
 
         ResourcePool.AddResource(MultiArenaCommon.Instance.Health, 10, this);
+        ResourcePool.Persist();
 
         Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getDefaultMaterial();
 

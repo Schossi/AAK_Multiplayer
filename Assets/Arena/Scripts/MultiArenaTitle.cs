@@ -32,7 +32,7 @@ public class MultiArenaTitle : MonoBehaviour
             NewGameButton.onClick.AddListener(onNewGame);
             ContinueButton.onClick.AddListener(onContinue);
 
-            if (MultiArenaCommon.Instance.GetStage() > 1)
+            if (MultiArenaCommon.Instance.Check())
             {
                 ContinueButton.interactable = true;
                 ContinueButton.GetComponentInChildren<TMPro.TMP_Text>().text = "Continue " + MultiArenaCommon.Instance.GetStageName();
@@ -52,6 +52,7 @@ public class MultiArenaTitle : MonoBehaviour
     {
         MultiArenaCommon.Instance.FadeOutAll(() =>
         {
+            MultiArenaCommon.Instance.ResetPlayers();
             MultiArenaCommon.Instance.ClearGame();
             MultiArenaCommon.Instance.LoadStage();
         });
@@ -61,6 +62,7 @@ public class MultiArenaTitle : MonoBehaviour
     {
         MultiArenaCommon.Instance.FadeOutAll(() =>
         {
+            MultiArenaCommon.Instance.LoadPlayers();
             MultiArenaCommon.Instance.LoadShop();
         });
     }

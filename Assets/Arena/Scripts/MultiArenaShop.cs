@@ -52,14 +52,13 @@ namespace AdventureExtras
 
                 var seed = Random.seed;
                 Seed.Value = seed;
-                Debug.Log("SET" + seed);
                 createShops(seed);
             }
             else
             {
                 ExitAction.IsAvailable = false;
                 ExitAction.name = "Waiting for Host...";
-                Debug.Log("GET" + Seed.Value);
+
                 if (Seed.Value != 0)
                     createShops(Seed.Value);
                 else

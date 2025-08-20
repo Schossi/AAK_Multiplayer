@@ -120,10 +120,17 @@ public class MultiArenaStage : MonoBehaviour
         var bonus = Math.Max(0, ParTime - Mathf.RoundToInt(_playTime));
         if (bonus > 0)
         {
-            foreach (var player in CharacterBase.Characters.OfType<MultiArenaPlayerCharacter>().Where(c => !c.Dead))
+            //be generous and send to all players including dead ones
+            foreach (var player in MultiArenaCommon.Instance.GetPlayers())
             {
                 player.Networker.SendEssence(bonus);
             }
+
+            //only send to alive players instead
+            //foreach (var player in CharacterBase.Characters.OfType<MultiArenaPlayerCharacter>().Where(c => !c.Dead))
+            //{
+            //    player.Networker.SendEssence(bonus);
+            //}
         }
 
         this.Delay(() => DialogBase.Main.Show("STAGE " + MultiArenaCommon.Instance.GetStage().ToString(), @$"WELL DONE!{Environment.NewLine}TIME BONUS: {bonus}", _ =>
@@ -132,6 +139,7 @@ public class MultiArenaStage : MonoBehaviour
             {
                 MultiArenaCommon.Instance.ReviveAll();
                 MultiArenaCommon.Instance.AdvanceStage();
+                MultiArenaCommon.Instance.SaveGame();
                 MultiArenaCommon.Instance.LoadShop();
             });
         }, new string[] { "Enter Shop" }, selection: DialogResult.Option1), 3f);

@@ -3743,7 +3743,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Fader: {fileID: 1315651068707926389}
+  Persister: {fileID: 1372397263415495957}
   Essence: {fileID: 11400000, guid: 200af2940c234ef45946ac68fab405b3, type: 2}
+  StartingWeapon: {fileID: 11400000, guid: 1ecd3f8725442924a8fd11bcfdcc0f7f, type: 2}
   Health: {fileID: 11400000, guid: e93b57931e2dc13408092ee62a857e32, type: 2}
   LockOn: {fileID: 8339078245411113145}
 --- !u!114 &1372397263415495957

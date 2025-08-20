@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class MultiArenaPlayer : NetworkBehaviour
 {
@@ -27,6 +28,8 @@ public class MultiArenaPlayer : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        Character.Persister.PersistenceKey = "P" + OwnerClientId;
 
         if (IsOwner)
         {
@@ -114,6 +117,43 @@ public class MultiArenaPlayer : NetworkBehaviour
         {
             _input.Disable();
         }
+    }
+
+    public void LoadPlayer()
+    {
+        loadPlayerRpc(NetworkDataHelper.GetData(Character));
+        NetworkDataHelper.ApplyData(Character);
+    }
+    [Rpc(SendTo.NotMe)]
+    private void loadPlayerRpc(NetworkDataHelper.NetworkCharacterData data)
+    {
+        NetworkDataHelper.SetData(Character, data);
+        NetworkDataHelper.ApplyData(Character);
+    }
+
+    public void ResetPlayer()
+    {
+        resetPlayerRpc();
+        resetPlayerLocal();
+    }
+    [Rpc(SendTo.NotMe)]
+    private void resetPlayerRpc()
+    {
+        resetPlayerLocal();
+    }
+    private void resetPlayerLocal()
+    {
+        foreach (var attribute in Character.AttributePool.Attributes)
+        {
+            Character.AttributePool.Set(attribute.Attribute, 10);
+        }
+
+        Character.ResourcePool.ResetResources();
+
+        Character.Inventory.Clear();
+        Character.Inventory.AddItems(new ItemQuantity(MultiArenaCommon.Instance.Essence, 0));
+        Character.Inventory.AddItems(new ItemQuantity(MultiArenaCommon.Instance.StartingWeapon, 1));
+        Character.Inventory.EquipItems(Character.Inventory.GetItem(MultiArenaCommon.Instance.StartingWeapon));
     }
 
     public bool CheckReceiveDamage(DamageKind damageKind)
