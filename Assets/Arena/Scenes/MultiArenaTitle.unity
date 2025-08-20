@@ -873,7 +873,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start
+  m_text: New Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1864,7 +1864,7 @@ GameObject:
   - component: {fileID: 551812797}
   - component: {fileID: 551812796}
   m_Layer: 5
-  m_Name: Start
+  m_Name: NewGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3470,7 +3470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0fef3a005e1a77419d9da26127c6744, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartButton: {fileID: 551812798}
+  NewGameButton: {fileID: 551812798}
   ContinueButton: {fileID: 2040962853}
 --- !u!114 &846681150
 MonoBehaviour:
@@ -3559,7 +3559,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e6bb425e2f249546b5d54afe432b32c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Essence: {fileID: 0}
+  Fader: {fileID: 1262882772}
+  Essence: {fileID: 11400000, guid: 200af2940c234ef45946ac68fab405b3, type: 2}
+  Health: {fileID: 11400000, guid: e93b57931e2dc13408092ee62a857e32, type: 2}
   LockOn: {fileID: 0}
 --- !u!1 &861928081
 GameObject:

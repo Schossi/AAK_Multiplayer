@@ -7,7 +7,6 @@ using TMPro;
 using Unity.Multiplayer.Playmode;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
 using static AdventureExtras.ArenaStage;
 
 public class MultiArenaStage : MonoBehaviour
@@ -34,6 +33,8 @@ public class MultiArenaStage : MonoBehaviour
 
     private void Start()
     {
+        MultiArenaCommon.Instance.Fader.DelayedFadeIn();
+
         //connect if scene is started directly in editor
         if (!NetworkManager.Singleton.IsListening)
         {
@@ -104,8 +105,11 @@ public class MultiArenaStage : MonoBehaviour
 
         this.Delay(() => DialogBase.Main.Show("STAGE " + MultiArenaCommon.Instance.GetStage().ToString(), "GAME OVER!", _ =>
         {
-            MultiArenaCommon.Instance.ReviveAll();
-            MultiArenaCommon.Instance.LoadTitle();
+            MultiArenaCommon.Instance.FadeOutAll(() =>
+            {
+                MultiArenaCommon.Instance.ReviveAll();
+                MultiArenaCommon.Instance.LoadTitle();
+            });
         }, new string[] { "Title Screen" }, selection: DialogResult.Option1), 2f);
     }
 
@@ -124,9 +128,12 @@ public class MultiArenaStage : MonoBehaviour
 
         this.Delay(() => DialogBase.Main.Show("STAGE " + MultiArenaCommon.Instance.GetStage().ToString(), @$"WELL DONE!{Environment.NewLine}TIME BONUS: {bonus}", _ =>
         {
-            MultiArenaCommon.Instance.ReviveAll();
-            MultiArenaCommon.Instance.AdvanceStage();
-            MultiArenaCommon.Instance.LoadShop();
+            MultiArenaCommon.Instance.FadeOutAll(() =>
+            {
+                MultiArenaCommon.Instance.ReviveAll();
+                MultiArenaCommon.Instance.AdvanceStage();
+                MultiArenaCommon.Instance.LoadShop();
+            });
         }, new string[] { "Enter Shop" }, selection: DialogResult.Option1), 3f);
     }
 

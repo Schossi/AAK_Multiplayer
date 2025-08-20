@@ -1,4 +1,5 @@
 ﻿using AdventureCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -9,8 +10,11 @@ public class MultiArenaCommon : MonoBehaviour
 {
     public static MultiArenaCommon Instance;
 
+    [Tooltip("used to fade camera to and from black and fade in sound when a scene starts or ends")]
+    public Fader Fader;
     [Tooltip("currency(awarded for finishing a stage under par time)")]
     public ItemBase Essence;
+    public ResourceType Health;
     public Follower LockOn;
 
     private static int _stage = 1;
@@ -21,21 +25,25 @@ public class MultiArenaCommon : MonoBehaviour
         Instance = this;
     }
 
+    public MultiArenaPlayerCharacter GetLocalPlayer() => CharacterBase.GetCharacter("PL") as MultiArenaPlayerCharacter;
+    public IEnumerable<MultiArenaPlayerCharacter> GetPlayers() => CharacterBase.Characters.OfType<MultiArenaPlayerCharacter>();
+
     public void Exit()
     {
-        LoadTitle();
+        FadeOutAll(() => LoadTitle());
     }
-
     public void Quit()
     {
+        Fader.FadeOut(() =>
+        {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+            Application.Quit();
 #endif
+        });
     }
 
-    public IEnumerable<MultiArenaPlayerCharacter> GetPlayers() => CharacterBase.Characters.OfType<MultiArenaPlayerCharacter>();
     public void ReviveAll()
     {
         foreach (var player in FindObjectsByType<MultiArenaPlayer>(FindObjectsSortMode.None))
@@ -84,5 +92,15 @@ public class MultiArenaCommon : MonoBehaviour
     public void LoadStage()
     {
         NetworkManager.Singleton.SceneManager.LoadScene("MultiArenaStage" + GetStage(), LoadSceneMode.Single);
+    }
+
+    public void FadeOutAll(Action callback)
+    {
+        GetLocalPlayer()?.Networker.SendFadeOut();
+
+        this.Delay(() =>
+        {
+            callback?.Invoke();
+        }, Fader.Duration + 0.5f);
     }
 }

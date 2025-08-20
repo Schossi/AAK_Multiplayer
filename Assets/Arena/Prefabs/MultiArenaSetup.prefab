@@ -3742,7 +3742,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e6bb425e2f249546b5d54afe432b32c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Fader: {fileID: 1315651068707926389}
   Essence: {fileID: 11400000, guid: 200af2940c234ef45946ac68fab405b3, type: 2}
+  Health: {fileID: 11400000, guid: e93b57931e2dc13408092ee62a857e32, type: 2}
   LockOn: {fileID: 8339078245411113145}
 --- !u!114 &1372397263415495957
 MonoBehaviour:

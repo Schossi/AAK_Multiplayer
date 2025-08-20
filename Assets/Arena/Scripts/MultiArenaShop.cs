@@ -28,6 +28,8 @@ namespace AdventureExtras
 
         private void Start()
         {
+            MultiArenaCommon.Instance.Fader.DelayedFadeIn();
+
             //connect if scene is started directly in editor
             if (!NetworkManager.Singleton.IsListening)
             {
@@ -65,7 +67,7 @@ namespace AdventureExtras
             }
         }
 
-        private void seedChanged(int oldValue,int newValue)
+        private void seedChanged(int oldValue, int newValue)
         {
             Seed.OnValueChanged -= seedChanged;
             createShops(newValue);
@@ -105,7 +107,7 @@ namespace AdventureExtras
                 {
                     if (r == DialogResult.Yes)
                     {
-                        MultiArenaCommon.Instance.LoadStage();
+                        MultiArenaCommon.Instance.FadeOutAll(() => MultiArenaCommon.Instance.LoadStage());
                     }
                     else
                     {

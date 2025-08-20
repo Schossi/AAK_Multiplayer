@@ -51,7 +51,7 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
         if (Networker.IsOwner)
             Networker.SendDeath(force);
     }
-
+    
     public void OnSpawn()
     {
         Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getDefaultMaterial();
@@ -79,7 +79,7 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
     {
         Dead = false;
 
-        ResourcePool.ResetResources();
+        ResourcePool.AddResource(MultiArenaCommon.Instance.Health, 10, this);
 
         Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getDefaultMaterial();
 

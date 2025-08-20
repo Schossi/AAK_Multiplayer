@@ -123,17 +123,6 @@ public class MultiArenaPlayer : NetworkBehaviour
 
         return IsOwner;
     }
-    public bool CheckSendDamage(IDamageReceiver receiver, DamageKind damageKind)
-    {
-        if (receiver?.AssociatedCharacter?.GetComponent<NetworkObject>() == null)
-            return true;//receiver is not networked > LOCAL
-
-        if (Array.IndexOf(Damages, damageKind) < 0)
-            return true;//non-networked damage kind > LOCAL
-
-        return IsOwner;
-    }
-
     public void ReceiveDamage(DamageEvent damageEvent)
     {
         var i = Array.IndexOf(Damages, damageEvent.Kind);
@@ -142,44 +131,6 @@ public class MultiArenaPlayer : NetworkBehaviour
 
         receiveDamageRpc(i, damageEvent.Value, damageEvent.Vector);
     }
-    public void SendDamage(DamageEvent damageEvent)
-    {
-        var i = Array.IndexOf(Damages, damageEvent.Kind);
-        if (i < 0)
-            return;
-
-        var receiver = damageEvent.Receiver.AssociatedCharacter.GetComponent<NetworkObject>();
-
-        sendDamageRpc(receiver, i, damageEvent.Value, damageEvent.Vector);
-    }
-
-    public void SendDeath(Vector3 force)
-    {
-        if (Character.Dead)
-            return;
-
-        sendDeathRpc(force);
-    }
-
-    public void SendRevive()
-    {
-        if (!Character.Dead)
-            return;
-
-        sendReviveRpc();
-    }
-
-    public void SendEssence(int quantity)
-    {
-        sendEssenceRpc(quantity);
-    }
-
-    [Rpc(SendTo.Everyone)]
-    private void sendEssenceRpc(int quantity)
-    {
-        Character.Inventory.AddItems(new ItemQuantity(MultiArenaCommon.Instance.Essence, quantity));
-    }
-
     [Rpc(SendTo.NotMe)]
     private void receiveDamageRpc(int damageIndex, float value, Vector3 vector)
     {
@@ -203,6 +154,26 @@ public class MultiArenaPlayer : NetworkBehaviour
         Character.PostDamageReceive(null, Character, new List<DamageEvent> { e });
     }
 
+    public bool CheckSendDamage(IDamageReceiver receiver, DamageKind damageKind)
+    {
+        if (receiver?.AssociatedCharacter?.GetComponent<NetworkObject>() == null)
+            return true;//receiver is not networked > LOCAL
+
+        if (Array.IndexOf(Damages, damageKind) < 0)
+            return true;//non-networked damage kind > LOCAL
+
+        return IsOwner;
+    }
+    public void SendDamage(DamageEvent damageEvent)
+    {
+        var i = Array.IndexOf(Damages, damageEvent.Kind);
+        if (i < 0)
+            return;
+
+        var receiver = damageEvent.Receiver.AssociatedCharacter.GetComponent<NetworkObject>();
+
+        sendDamageRpc(receiver, i, damageEvent.Value, damageEvent.Vector);
+    }
     [Rpc(SendTo.NotMe)]
     private void sendDamageRpc(NetworkObjectReference receiverReference, int damageIndex, float value, Vector3 vector)
     {
@@ -232,15 +203,50 @@ public class MultiArenaPlayer : NetworkBehaviour
         character.PostDamageReceive(null, character, new List<DamageEvent> { e });
     }
 
+    public void SendDeath(Vector3 force)
+    {
+        if (Character.Dead)
+            return;
+
+        sendDeathRpc(force);
+    }
     [Rpc(SendTo.Everyone)]
     private void sendDeathRpc(Vector3 force)
     {
         Character.DieLocal(force);
     }
 
-    [Rpc(SendTo.Everyone)]
+    public void SendRevive()
+    {
+        if (!Character.Dead)
+            return;
+
+        Character.ReviveLocal();
+        sendReviveRpc();
+    }
+    [Rpc(SendTo.NotMe)]
     private void sendReviveRpc()
     {
         Character.ReviveLocal();
+    }
+
+    public void SendEssence(int quantity)
+    {
+        sendEssenceRpc(quantity);
+    }
+    [Rpc(SendTo.Everyone)]
+    private void sendEssenceRpc(int quantity)
+    {
+        Character.Inventory.AddItems(new ItemQuantity(MultiArenaCommon.Instance.Essence, quantity));
+    }
+
+    public void SendFadeOut()
+    {
+        fadeOutRpc();
+    }
+    [Rpc(SendTo.Everyone)]
+    private void fadeOutRpc()
+    {
+        MultiArenaCommon.Instance.Fader.FadeOut();
     }
 }

@@ -1,31 +1,36 @@
 ﻿using Unity.Multiplayer.Playmode;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MultiArenaTitle : MonoBehaviour
 {
-    public Button StartButton;
+    [Tooltip("button that starts a new game, script automatically attaches to onClick")]
+    public Button NewGameButton;
+    [Tooltip("button continues the last game, script automatically attaches to onClick and sets interactable")]
     public Button ContinueButton;
 
     private void Awake()
     {
-        StartButton.interactable = false;
+        NewGameButton.interactable = false;
         ContinueButton.interactable = false;
     }
 
     private void Start()
     {
+        Time.timeScale = 1f;
+
+        MultiArenaCommon.Instance.Fader.DelayedFadeIn();
+
         if (CurrentPlayer.IsMainEditor)
         {
             if (!NetworkManager.Singleton.IsListening)
                 NetworkManager.Singleton.StartHost();
 
-            StartButton.interactable = true;
+            NewGameButton.interactable = true;
 
-            StartButton.onClick.AddListener(new UnityAction(startGame));
-            ContinueButton.onClick.AddListener(new UnityAction(continueGame));
+            NewGameButton.onClick.AddListener(onNewGame);
+            ContinueButton.onClick.AddListener(onContinue);
 
             if (MultiArenaCommon.Instance.GetStage() > 1)
             {
@@ -38,19 +43,25 @@ public class MultiArenaTitle : MonoBehaviour
             if (!NetworkManager.Singleton.IsListening)
                 NetworkManager.Singleton.StartClient();
 
-            StartButton.GetComponentInChildren<TMPro.TMP_Text>().text = "waiting for host...";
+            NewGameButton.GetComponentInChildren<TMPro.TMP_Text>().text = "waiting for host...";
             ContinueButton.GetComponentInChildren<TMPro.TMP_Text>().text = "waiting for host...";
         }
     }
 
-    private void startGame()
+    private void onNewGame()
     {
-        MultiArenaCommon.Instance.ClearGame();
-        MultiArenaCommon.Instance.LoadStage();
+        MultiArenaCommon.Instance.FadeOutAll(() =>
+        {
+            MultiArenaCommon.Instance.ClearGame();
+            MultiArenaCommon.Instance.LoadStage();
+        });
     }
 
-    private void continueGame()
+    private void onContinue()
     {
-        MultiArenaCommon.Instance.LoadShop();
+        MultiArenaCommon.Instance.FadeOutAll(() =>
+        {
+            MultiArenaCommon.Instance.LoadShop();
+        });
     }
 }
