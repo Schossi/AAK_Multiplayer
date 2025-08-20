@@ -20,5 +20,5 @@ One central part of synchronization is the networking of the actor component. Wh
 
 Another important part of synchronization is damage handling. In Multi Arena only local player instances handle damage and send damage events to their counterparts. Remote instances discard any damage they would send or receive themselves.
 
-Player and Scene management is done in the most basic way demonstrated by NfG examples. Players are spawned by the NetworkManager and carried over to any other scenes. Persistance is done at the Host only, data for other players is sent when a game is continued. The ActionAdventure/PlayerData window can be used to check the currently saved data.
-![project structure](https://github.com/Schossi/AAK_Multiplayer/blob/master/Project.png)   
+Player and Scene management is done in the most basic way demonstrated by NfG examples. Players are spawned by the NetworkManager and carried over to any other scenes. Persistance is done at the Host only, data for other players is sent when a game is continued. The ActionAdventure/PlayerData window can be used to check the currently saved data.  
+![project structure](https://github.com/Schossi/AAK_Multiplayer/blob/master/Persistence.png)   
