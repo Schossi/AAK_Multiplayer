@@ -2,9 +2,14 @@
 using Unity.Netcode;
 using UnityEngine;
 
+/// <summary>
+/// networking component that connects enemy instances over different machines
+/// </summary>
 public class MultiArenaEnemy : NetworkBehaviour
 {
+    [Tooltip("enemies are instantiated from network prefabs using this index instead of being activated like in the arena demo")]
     public int PrefabIndex;
+    [Tooltip("get enabled only on the owner, enemy behaviour only runs on the owner")]
     public Behaviour ScriptMachine;
 
     public CapsuleCollider Collider;

@@ -3,11 +3,20 @@ using AdventureExtras;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// special version of arena player for multiplayer<br/>
+/// implements special damage handling so players get and receive damage locally and then send it to other instances<br/>
+/// also handles the different player colors and player death/revival
+/// </summary>
 public class MultiArenaPlayerCharacter : ArenaPlayer
 {
+    [Tooltip("component that communicates with instances on other machines")]
     public MultiArenaPlayer Networker;
+    [Tooltip("default material for each player in join order")]
     public Material[] MaterialsDefault;
+    [Tooltip("material for each player when they have run out of health")]
     public Material[] MaterialsGhost;
+    [Tooltip("material for the fade animation of the ragdoll of each player")]
     public Material[] MaterialsFade;
 
     private MultiArenaGhostInstruction _ghostInstruction = new MultiArenaGhostInstruction();

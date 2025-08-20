@@ -1,9 +1,15 @@
 using AdventureCore;
 using UnityEngine;
 
+/// <summary>
+/// special version of movement that mostly disables movement on non-owners<br/>
+/// send speeds needed for animation over its networker<br/>
+/// the actual transformn needs to be synchronized using a network transform
+/// </summary>
 public class NetworkCharacterControllerMovement : CharacterControllerMovement
 {
     [Header("Network")]
+    [Tooltip("component that communicates with instances on other machines")]
     public MovementNetworker Networker;
 
     private void OnEnable()

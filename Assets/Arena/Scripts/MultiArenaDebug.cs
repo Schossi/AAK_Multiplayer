@@ -4,6 +4,10 @@ using Unity.Multiplayer.Playmode;
 using Unity.Netcode;
 using UnityEngine;
 
+/// <summary>
+/// helper component for the MultiArenaDebuggingEnemies scene<br/>
+/// is used to spawn test enemies for debugging
+/// </summary>
 public class MultiArenaDebug : MonoBehaviour
 {
     public NetworkPrefabsList Prefabs;

@@ -6,6 +6,9 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary> 
+/// common logic used across all scenes in the multi arena demo 
+/// </summary>
 public class MultiArenaCommon : MonoBehaviour
 {
     public static MultiArenaCommon Instance;
@@ -16,8 +19,11 @@ public class MultiArenaCommon : MonoBehaviour
     public PersisterBase Persister;
     [Tooltip("currency(awarded for finishing a stage under par time)")]
     public ItemBase Essence;
+    [Tooltip("added and equipped on players when a new game is started")]
     public ItemBase StartingWeapon;
+    [Tooltip("when a player is revived after a stage is beaten 10 of this resource is added")]
     public ResourceType Health;
+    [Tooltip("visual for lock on, gets set when the player lock on manager changes locked on point")]
     public Follower LockOn;
 
     private void Awake()

@@ -1,6 +1,9 @@
 ﻿using AdventureCore;
 using UnityEngine;
 
+/// <summary>
+/// instruction that disables damage and collisions for players that have run out of HP
+/// </summary>
 public class MultiArenaGhostInstruction : CharacterInstructionBase
 {
     public override void Apply(CharacterBase character)

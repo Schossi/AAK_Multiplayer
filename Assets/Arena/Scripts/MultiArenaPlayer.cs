@@ -7,18 +7,32 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 
+/// <summary>
+/// networking component that connects the different instances of the same player
+/// </summary>
 public class MultiArenaPlayer : NetworkBehaviour
 {
+    [Tooltip("character that gets networked by this component")]
     public MultiArenaPlayerCharacter Character;
+    [Tooltip("gets bound to input on local player")]
     public NetworkCharacterControllerMovement Movement;
+    [Tooltip("gets bound to input on local player")]
     public CharacterActionArea ActionArea;
+    [Tooltip("gets bound to input on local player")]
     public ActionItemSlot WeaponSlot;
+    [Tooltip("gets bound to input on local player")]
     public CharacterActionBase JumpAction;
+    [Tooltip("gets bound to input on local player")]
     public CharacterActionBase RollAction;
+    [Tooltip("gets bound to input on local player")]
     public UsableItemSlot UsableSlot1;
+    [Tooltip("gets bound to input on local player")]
     public UsableItemSlot UsableSlot2;
+    [Tooltip("gets bound to input on local player")]
     public UsableItemSlot UsableSlot3;
+    [Tooltip("gets bound to input on local player")]
     public LockOnManager LockOnManager;
+    [Tooltip("damage types that get are sent and receiced locally, the result is sent over the network")]
     public ResourceDamage[] Damages;
 
     private ArenaInput _input;

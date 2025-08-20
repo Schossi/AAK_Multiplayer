@@ -1,8 +1,14 @@
 ﻿using AdventureCore;
 using System;
 using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// synchronizes equipped items and their usage over the network<br/>
+/// when an item is equipped on the owner the networker commands other instances to do the same<br/>
+/// using an item on a slot is also synced so usable slots can correctly instantiate their prefabs
+/// </summary>
 public class EquipmentNetworker : NetworkBehaviour
 {
     private class InUseForwarder
@@ -22,6 +28,7 @@ public class EquipmentNetworker : NetworkBehaviour
         }
     }
 
+    [Tooltip("the equipment and usage of this inventory is synchronized over the network with the owner as the source")]
     public InventoryBase Inventory;
 
     private UnityAction<ItemSlotBase> _equipmentChanged;

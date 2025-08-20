@@ -3,6 +3,10 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// logic for the title scene of the multi arena demo<br/>
+/// checks if game can be continues and loads new or continued games
+/// </summary>
 public class MultiArenaTitle : MonoBehaviour
 {
     [Tooltip("button that starts a new game, script automatically attaches to onClick")]

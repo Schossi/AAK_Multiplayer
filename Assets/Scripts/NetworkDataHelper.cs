@@ -2,6 +2,9 @@
 using System.Linq;
 using Unity.Netcode;
 
+/// <summary>
+/// helper class that transforms data for inventory, resources and attributes to network serializable versions
+/// </summary>
 public static class NetworkDataHelper
 {
     public static NetworkCharacterData GetData(CharacterBase character)

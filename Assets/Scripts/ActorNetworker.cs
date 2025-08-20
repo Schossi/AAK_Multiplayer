@@ -4,8 +4,14 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// synchronizes an actor over the network<br/>
+/// actions started on the owner instance are sent per RCP and executed on non-owners<br/>
+/// it identifies actions by name inside the actor or by path for actions somewhere in the scene
+/// </summary>
 public class ActorNetworker : NetworkBehaviour
 {
+    [Tooltip("actor that gets synchronized by the networker, the networker sends actions started on the owner to all other instances")]
     public CharacterActorBase Actor;
 
     private UnityAction<CharacterActionBase> _actionStarted;

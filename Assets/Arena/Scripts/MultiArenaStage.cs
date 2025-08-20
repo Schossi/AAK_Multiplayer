@@ -9,10 +9,15 @@ using Unity.Netcode;
 using UnityEngine;
 using static AdventureExtras.ArenaStage;
 
+/// <summary>
+/// logic for the MultiArenaStage(1-4) scenes in the multi arena demo<br/>
+/// announces stage, spawns enemies and continues on death or win
+/// </summary>
 public class MultiArenaStage : MonoBehaviour
 {
     public static MultiArenaStage CurrentStage;
 
+    [Tooltip("prefabs used to spawn enemies, which one is used is determined by MultiArenaEnemy.PrefabIndex or the name if normal ArenaEnemy are found")]
     public NetworkPrefabsList Prefabs;
     [Tooltip("when and which enemies spawn in the stage")]
     public StageSpawn[] Spawns;

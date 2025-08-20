@@ -9,10 +9,8 @@ using UnityEngine;
 namespace AdventureExtras
 {
     /// <summary>
-    /// logic for the ArenaShop scene, spawn random shops where players can exchange essence for useful items
+    /// logic for the MultiArenaShop scene, spawn random shops where players can exchange essence for useful items
     /// </summary>
-    /// <remarks><see href="https://adventure.softleitner.com/manual">https://adventure.softleitner.com/manual</see></remarks>
-    [HelpURL("https://adventureapi.softleitner.com/class_adventure_extras_1_1_arena_shop.html")]
     public class MultiArenaShop : NetworkBehaviour
     {
         [Tooltip("when this action is started the script displays a dialog for entering the next stage")]
