@@ -21,6 +21,12 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
 
     private MultiArenaGhostInstruction _ghostInstruction = new MultiArenaGhostInstruction();
 
+    private void LateUpdate()
+    {
+        if (transform.position.y < 0)
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+    }
+
     public override bool PreDamageReceive(IDamageSender sender, IDamageReceiver receiver)
     {
         if (IsReceiveDamageSuspended)
@@ -60,7 +66,7 @@ public class MultiArenaPlayerCharacter : ArenaPlayer
         if (Networker.IsOwner)
             Networker.SendDeath(force);
     }
-    
+
     public void OnSpawn()
     {
         Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = getDefaultMaterial();
